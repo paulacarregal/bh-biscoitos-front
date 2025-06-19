@@ -47,7 +47,6 @@ const QuantityControl = styled.div`
     align-items: center;
     gap: 5px;
     flex: 1;
-    min-width: 150px;
 `;
 
 const QuantityButton = styled.button`

@@ -14,6 +14,10 @@ const StyledHeader = styled.header`
     z-index: 1000;
 `;
 
+const StyledImg = styled.header`
+    max-height: 1%
+`;
+
 const MenuIcon = styled.div`
     font-size: 2em;
     cursor: pointer;
@@ -25,6 +29,7 @@ const MenuIcon = styled.div`
 const Title = styled.h1`
     margin: 0;
     font-size: 1.5em;
+    color: #f4f4f4;
     flex-grow: 1;
     text-align: center;
 `;
@@ -38,6 +43,8 @@ function Header({ onMenuToggle }) {
     return (
         <StyledHeader>
             <MenuIcon onClick={onMenuToggle}>☰</MenuIcon>
+            <StyledImg><img src="../title.png" alt="" /></StyledImg>
+            
             <Title>BH BISCOITOS</Title>
             <Spacer />
         </StyledHeader>

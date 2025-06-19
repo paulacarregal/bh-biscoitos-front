@@ -18,6 +18,10 @@ const MainLayout = styled.div`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+
+    @media (min-width: 768px) {
+        font-size: 1.5em;
+    }
 `;
 
 const ContentWrapper = styled.div`
@@ -28,7 +32,6 @@ const ContentWrapper = styled.div`
 const MainContent = styled.main`
     flex-grow: 1;
     padding-top: 0;
-    margin-left: ${props => props.isSidebarOpen ? '200px' : '0'};
     transition: margin-left 0.3s ease-in-out;
 
     @media (max-width: 768px) {

@@ -1,5 +1,28 @@
-import React from 'react';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import { Bar, Pie } from 'react-chartjs-2';
+
+// Registrando os componentes da Chart.js
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    ArcElement,
+    Title,
+    Tooltip,
+    ChartDataLabels,
+    Legend
+);
 import styled from 'styled-components';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 const PageContainer = styled.div`
     padding: 20px;
@@ -69,6 +92,121 @@ const ChartPlaceholder = styled.div`
 `;
 
 function ReportsPage({ isSidebarOpen }) {
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            datalabels: {
+                formatter: (value, ctx) => {
+                    const datapoints = ctx.chart.data.datasets[0].data;
+                    const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
+
+                    return total
+                },
+                color: '#fff',
+                font: {
+                    weight: 'bold',
+                    size: 10,
+                }
+            }
+
+        },
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    };
+    const optionsPie = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom',
+            },
+            title: {
+                display: true,
+                text: 'Gráfico de Pizza',
+                font: {
+                    size: 16
+                }
+            },
+            datalabels: {
+                // Função para formatar o valor
+                formatter: (value, ctx) => {
+                    // Acessa todos os dados do gráfico
+                    const datapoints = ctx.chart.data.datasets[0].data;
+                    // Soma todos os valores para obter o total
+                    const total = datapoints.reduce((total, datapoint) => total + datapoint, 0);
+                    // Calcula a porcentagem
+                    const percentage = (value / total) * 100;
+                    // Retorna a string formatada
+                    return percentage.toFixed(2) + "%";
+                },
+                color: '#fff', // Cor do texto
+                font: {
+                    weight: 'bold',
+                    size: 7,
+                }
+            }
+        },
+    };
+    const labels = [''];
+
+    const data = {
+        labels,
+        datasets: [
+            {
+                label: 'Bolos',
+                data: labels.map(() => 1900),
+                backgroundColor: '#FFB800',
+                borderColor: 'rgba(216, 58, 92, 0.6)',
+                borderWidth: 0,
+            },
+            {
+                label: 'Pães',
+                data: labels.map(() => 2500),
+                backgroundColor: '#884D2F',
+                borderColor: 'rgba(255, 99, 132, 0.6)',
+                borderWidth: 0,
+            },
+            {
+                label: 'Biscoitos',
+                data: labels.map(() => 4050),
+                backgroundColor: '#A0A0A0',
+                borderColor: 'rgba(255, 99, 132, 0.6)',
+                borderWidth: 0,
+            },
+        ],
+    };
+
+
+    const dataPie = {
+        // As etiquetas para cada fatia da pizza
+        labels: ['Pix', 'Dinheiro', 'Cartão'],
+        datasets: [
+            {
+                label: '%',
+                // Os valores numéricos para cada fatia
+                data: [12.5, 62.5, 25],
+                // Um array de cores, uma para cada fatia
+                backgroundColor: [
+                    '#FFB800',
+                    '#884D2F',
+                    '#A0A0A0',
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                ],
+                borderWidth: 0,
+            },
+        ],
+    };
+
+
     return (
         <PageContainer isSidebarOpen={isSidebarOpen}>
             <h1>Relatórios</h1>
@@ -90,14 +228,15 @@ function ReportsPage({ isSidebarOpen }) {
             <ChartContainer>
                 <StatTitle>Vendas por Categorias</StatTitle>
                 <ChartPlaceholder>
-                    Gráfico de Barras (placeholder)
+                    <Bar options={options} data={data} />
                 </ChartPlaceholder>
             </ChartContainer>
 
             <ChartContainer>
                 <StatTitle>Formas de Pagamento</StatTitle>
                 <ChartPlaceholder>
-                    Gráfico de Pizza (placeholder)
+                    <Pie options={optionsPie} data={dataPie} />
+
                 </ChartPlaceholder>
             </ChartContainer>
         </PageContainer>
